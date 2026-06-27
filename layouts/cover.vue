@@ -7,7 +7,7 @@ provide('toc-sidebar-open', tocOpen)
 
 <template>
   <div
-    class="slidev-layout default px-8"
+    class="slidev-layout cover"
     :class="{ 'with-sidebar': tocOpen }"
   >
     <slot />
@@ -16,10 +16,10 @@ provide('toc-sidebar-open', tocOpen)
 </template>
 
 <style>
-.slidev-layout.default {
+.slidev-layout.cover {
   transition: padding-left 200ms ease;
 }
-.slidev-layout.default.with-sidebar {
+.slidev-layout.cover.with-sidebar {
   padding-left: calc(2rem + 18rem + 1px);
 }
 </style>

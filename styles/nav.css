@@ -1,0 +1,11 @@
+/* Force nav to always be visible except on first/last slides */
+nav {
+  display: flex !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  pointer-events: auto !important;
+}
+
+#page-root.nav-hidden nav {
+  display: none !important;
+}

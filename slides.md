@@ -15,16 +15,22 @@ layout: cover
 class: text-center
 ---
 
-# Ultimate Reactive Programming
-
-An interactive course on Observables, operators, and streams
-
-<div class="text-sm opacity-60 mt-6">
-  RxJS &amp; Rx.NET · side by side · with animated marble diagrams &amp; quizzes
-</div>
-
-<div class="text-xs opacity-40 mt-12">
-  Press → to start · Toggle dark mode with the theme switch
+<div class="flex flex-col justify-center items-center h-full gap-2">
+  <div class="text-8xl font-bold bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+    Ultimate Reactive<br/>Programming
+  </div>
+  
+  <div class="text-2xl text-gray-300 font-light">
+    An interactive course on Observables, operators, and streams
+  </div>
+  
+  <div class="text-sm opacity-60">
+    RxJS &amp; Rx.NET · side by side · with animated marble diagrams &amp; quizzes
+  </div>
+  
+  <div class="text-xs opacity-40 mt-4">
+    Press → to start · Toggle dark mode with the theme switch
+  </div>
 </div>
 
 ---
