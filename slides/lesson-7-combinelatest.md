@@ -9,8 +9,7 @@ title: Combining Streams — combineLatest
 # Lesson 7 · Combining Streams
 
 ---
-layout: default
-class: px-8
+layout: default-content
 ---
 
 ## A dashboard that reacts to any sensor
@@ -33,8 +32,7 @@ The natural sources are **`BehaviorSubject`s** (Lesson 6) — each piece of UI s
 </v-click>
 
 ---
-layout: default
-class: px-8
+layout: default-content
 ---
 
 ## The setup · two sources feeding one view
@@ -57,8 +55,7 @@ A `user$` stream and a `theme$` stream. The view combines them into "`{user} in 
 
 
 ---
-layout: default
-class: px-8
+layout: default-content
 ---
 
 ## Reveal
@@ -80,8 +77,7 @@ class: px-8
 
 
 ---
-layout: default
-class: px-8
+layout: default-content
 ---
 
 ### RxJS · TypeScript
@@ -89,8 +85,7 @@ class: px-8
 <<< @/snippets/lesson-7-combinelatest.ts
 
 ---
-layout: default
-class: px-8
+layout: default-content
 ---
 
 ### Rx.NET · C#
@@ -105,8 +100,7 @@ class: px-8
 > ```
 
 ---
-layout: default
-class: px-8
+layout: default-content
 ---
 
 ## Summary
@@ -118,8 +112,7 @@ class: px-8
 - `merge` is the simpler sibling — it just interleaves, no combining.
 
 ---
-layout: default
-class: px-8
+layout: default-content
 ---
 
 <QuizWidget :question-index="6" />

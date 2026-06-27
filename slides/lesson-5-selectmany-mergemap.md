@@ -9,8 +9,7 @@ title: SelectMany (mergeMap) — keep every inner
 # Lesson 5 · SelectMany / mergeMap
 
 ---
-layout: default
-class: px-8
+layout: default-content
 ---
 
 ## A dispatch center that never cancels
@@ -31,8 +30,7 @@ Picture a dispatch center that fires off every incoming job and lets them all ru
 </v-click>
 
 ---
-layout: default
-class: px-8
+layout: default-content
 ---
 
 ## Same scenario as Lesson 4 — opposite policy
@@ -55,8 +53,7 @@ The input is **byte-for-byte identical** to Lesson 4: three clicks, same timing,
 
 
 ---
-layout: default
-class: px-8
+layout: default-content
 ---
 
 ## Reveal
@@ -78,8 +75,7 @@ class: px-8
 
 
 ---
-layout: default
-class: px-8
+layout: default-content
 ---
 
 ### RxJS · TypeScript · fire-and-forget
@@ -87,8 +83,7 @@ class: px-8
 <<< @/snippets/lesson-5-mergemap.ts
 
 ---
-layout: default
-class: px-8
+layout: default-content
 ---
 
 ### Rx.NET · C# · fire-and-forget
@@ -103,8 +98,7 @@ class: px-8
 > ```
 
 ---
-layout: default
-class: px-8
+layout: default-content
 ---
 
 ## Summary
@@ -115,8 +109,7 @@ class: px-8
 - The choice is **semantic**, not stylistic.
 
 ---
-layout: default
-class: px-8
+layout: default-content
 ---
 
 <QuizWidget :question-index="4" />

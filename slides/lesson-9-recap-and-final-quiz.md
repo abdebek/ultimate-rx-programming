@@ -9,8 +9,7 @@ title: Recap & Final Quiz
 # Lesson 9 · Recap
 
 ---
-layout: default
-class: px-8
+layout: default-content
 ---
 
 ## The full toolkit
@@ -37,8 +36,7 @@ You've now seen the full reactive toolkit end-to-end:
 </v-click>
 
 ---
-layout: default
-class: px-8
+layout: default-content
 ---
 
 # 🧠 Final Quiz
@@ -46,8 +44,7 @@ class: px-8
 <QuizWidget :question-index="8" />
 
 ---
-layout: default
-class: px-8
+layout: default-content
 ---
 
 ## Where to go next
@@ -59,15 +56,3 @@ class: px-8
 
 > You've got the foundations. Everything from here is a deeper dive into one of these.
 
----
-layout: cover
-class: text-center
----
-
-# You're done!
-
-Subscribe. React. Dispose.
-
-<div class="text-sm opacity-60 mt-8">
-  The contract is the same across RxJS and Rx.NET — you've learned both.
-</div>

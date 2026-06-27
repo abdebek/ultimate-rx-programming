@@ -9,8 +9,7 @@ title: Creation Operators — of, from, range
 # Lesson 2 · Creation Operators
 
 ---
-layout: default
-class: px-8
+layout: default-content
 ---
 
 ## The shortcut for creating streams
@@ -34,8 +33,7 @@ Imagine writing a `for`-loop by hand, calling `emit()` once per value. That's wh
 </v-click>
 
 ---
-layout: default
-class: px-8
+layout: default-content
 ---
 
 ## Visualization · `of(1, 2, 3)` vs `range(1, 3)`
@@ -77,8 +75,7 @@ class: px-8
 </v-click>
 
 ---
-layout: default
-class: px-8
+layout: default-content
 ---
 
 ### RxJS · TypeScript
@@ -86,8 +83,7 @@ class: px-8
 <<< @/snippets/lesson-2-creation.ts
 
 ---
-layout: default
-class: px-8
+layout: default-content
 ---
 
 ### Rx.NET · C#
@@ -107,8 +103,7 @@ class: px-8
 > ```
 
 ---
-layout: default
-class: px-8
+layout: default-content
 ---
 
 ## Summary
@@ -119,8 +114,7 @@ class: px-8
 - All three are **cold** — each subscription gets its own execution (see Lesson 1).
 
 ---
-layout: default
-class: px-8
+layout: default-content
 ---
 
 <QuizWidget :question-index="1" />

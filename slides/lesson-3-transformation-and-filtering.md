@@ -9,8 +9,7 @@ title: Transformation & Filtering
 # Lesson 3 · Transformation & Filtering
 
 ---
-layout: default
-class: px-8
+layout: default-content
 ---
 
 ## Workstations on a conveyor belt
@@ -32,8 +31,7 @@ RxJS chains workstations with `pipe()`; Rx.NET uses LINQ method chains. The sema
 </v-click>
 
 ---
-layout: default
-class: px-8
+layout: default-content
 ---
 
 ## The pipeline
@@ -57,8 +55,7 @@ Over `range(1, 8)`:
 </v-click>
 
 ---
-layout: default
-class: px-8
+layout: default-content
 ---
 
 ## Predict
@@ -80,8 +77,7 @@ class: px-8
 </v-click>
 
 ---
-layout: default
-class: px-8
+layout: default-content
 ---
 
 ## Reveal
@@ -103,8 +99,7 @@ class: px-8
 
 
 ---
-layout: default
-class: px-8
+layout: default-content
 ---
 
 ### RxJS · TypeScript
@@ -112,8 +107,7 @@ class: px-8
 <<< @/snippets/lesson-3-transform.ts
 
 ---
-layout: default
-class: px-8
+layout: default-content
 ---
 
 ### Rx.NET · C#
@@ -128,8 +122,7 @@ class: px-8
 > ```
 
 ---
-layout: default
-class: px-8
+layout: default-content
 ---
 
 ## Summary
@@ -140,8 +133,7 @@ class: px-8
 - Operators compose left-to-right; order matters.
 
 ---
-layout: default
-class: px-8
+layout: default-content
 ---
 
 <QuizWidget :question-index="2" />

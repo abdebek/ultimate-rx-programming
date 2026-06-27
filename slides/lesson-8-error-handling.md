@@ -9,8 +9,7 @@ title: Error Handling — catchError & retry
 # Lesson 8 · Resilience
 
 ---
-layout: default
-class: px-8
+layout: default-content
 ---
 
 ## A backup generator for your streams
@@ -33,8 +32,7 @@ The critical fact: **an unhandled `error` is terminal.** The stream never emits 
 </v-click>
 
 ---
-layout: default
-class: px-8
+layout: default-content
 ---
 
 ## The scenario · a source that errors after one value
@@ -57,8 +55,7 @@ A source emits `1`, then errors (`✖`). Without `catchError`, the output would 
 
 
 ---
-layout: default
-class: px-8
+layout: default-content
 ---
 
 ## Reveal
@@ -80,8 +77,7 @@ class: px-8
 
 
 ---
-layout: default
-class: px-8
+layout: default-content
 ---
 
 ### RxJS · TypeScript
@@ -89,8 +85,7 @@ class: px-8
 <<< @/snippets/lesson-8-error.ts
 
 ---
-layout: default
-class: px-8
+layout: default-content
 ---
 
 ### Rx.NET · C#
@@ -104,8 +99,7 @@ class: px-8
 > ```
 
 ---
-layout: default
-class: px-8
+layout: default-content
 ---
 
 ## Summary
@@ -116,8 +110,7 @@ class: px-8
 - Recovery is itself a stream — you can fall back to *another network call*, not just a static value.
 
 ---
-layout: default
-class: px-8
+layout: default-content
 ---
 
 <QuizWidget :question-index="7" />

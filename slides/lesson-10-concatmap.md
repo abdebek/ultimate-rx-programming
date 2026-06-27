@@ -9,10 +9,27 @@ title: concatMap — serialize inner subscriptions
 # Lesson 10 · concatMap
 
 ---
-
-layout: default
-class: px-8
+layout: default-content
 ---
+
+## A single-lane bridge
+
+A single-lane bridge: cars line up and cross **one at a time**. The next car can't enter the bridge until the first has reached the far side. That's `concatMap`: it queues inner subscriptions and processes them **sequentially** — the next inner doesn't start until the previous one completes.
+
+This is the third of the four higher-order mapping strategies ("the four horsemen"):
+
+| Strategy | RxJS | Rx.NET | Behavior |
+| :-- | :-- | :-- | :-- |
+| **Switch** | `switchMap` | `Select().Switch()` | Cancel previous inner |
+| **Merge** | `mergeMap` | `SelectMany` | Let all inners run concurrently |
+| **Concat** | `concatMap` | `Select().Concat()` | Queue inners, run one at a time |
+| **Exhaust** | `exhaustMap` | `Select().Exhaust()` | Ignore new emissions while inner is active |
+
+<v-click>
+
+> The question you ask yourself: **does order matter?** If the second emission depends on the first completing (file upload, write to a log, sequential API calls) → `concatMap`. If it doesn't → `mergeMap` / `switchMap`.
+
+</v-click>---
 
 ## A single-lane bridge
 
@@ -34,9 +51,7 @@ This is the third of the four higher-order mapping strategies ("the four horseme
 </v-click>
 
 ---
-
-layout: default
-class: px-8
+layout: default-content
 ---
 
 ## The scenario · two clicks, same timing as Lessons 4 & 5
@@ -59,8 +74,7 @@ Same setup you've seen with switchMap and mergeMap: two clicks at t=0 and t=1, e
 
 
 ---
-layout: default
-class: px-8
+layout: default-content
 ---
 
 ## Reveal
@@ -82,9 +96,7 @@ class: px-8
 
 
 ---
-
-layout: default
-class: px-8
+layout: default-content
 ---
 
 ## When to use concatMap
@@ -105,9 +117,7 @@ class: px-8
 </v-click>
 
 ---
-
-layout: default
-class: px-8
+layout: default-content
 ---
 
 ### RxJS · TypeScript · sequential file upload
@@ -137,9 +147,7 @@ from(files).pipe(
 > ```
 
 ---
-
-layout: default
-class: px-8
+layout: default-content
 ---
 
 ### Rx.NET · C# · sequential file upload
@@ -173,9 +181,7 @@ files.ToObservable()
 > ```
 
 ---
-
-layout: default
-class: px-8
+layout: default-content
 ---
 
 ## Summary
@@ -187,9 +193,7 @@ class: px-8
 - Same input, different operator → different output. **The operator is a semantic decision.**
 
 ---
-
-layout: default
-class: px-8
+layout: default-content
 ---
 
 <QuizWidget :question-index="9" />

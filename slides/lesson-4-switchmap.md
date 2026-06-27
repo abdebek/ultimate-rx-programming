@@ -13,8 +13,7 @@ You type in a search box. Each keystroke fires an HTTP request. Each request is 
 Reactive programming's killer feature is **higher-order mapping**: operators that flatten nested streams into one. The two you must know differ in one policy decision — *what happens to the previous inner when a new one arrives?*
 
 ---
-layout: default
-class: px-8
+layout: default-content
 ---
 
 ## The two strategies
@@ -31,8 +30,7 @@ class: px-8
 </v-click>
 
 ---
-layout: default
-class: px-8
+layout: default-content
 ---
 
 ## The scenario · three clicks, each spawns an inner stream
@@ -55,8 +53,7 @@ Three clicks arrive (top lane). Each click starts a **purple** inner stream that
 
 
 ---
-layout: default
-class: px-8
+layout: default-content
 ---
 
 ## Reveal
@@ -78,8 +75,7 @@ class: px-8
 
 
 ---
-layout: default
-class: px-8
+layout: default-content
 ---
 
 ### RxJS · TypeScript · type-ahead search
@@ -87,8 +83,7 @@ class: px-8
 <<< @/snippets/lesson-4-switchmap.ts
 
 ---
-layout: default
-class: px-8
+layout: default-content
 ---
 
 ### Rx.NET · C# · type-ahead search
@@ -102,8 +97,7 @@ class: px-8
 > ```
 
 ---
-layout: default
-class: px-8
+layout: default-content
 ---
 
 ## Summary
@@ -114,8 +108,7 @@ class: px-8
 - Next lesson: the opposite choice — `mergeMap`/`SelectMany`, where nothing is cancelled.
 
 ---
-layout: default
-class: px-8
+layout: default-content
 ---
 
 <QuizWidget :question-index="3" />

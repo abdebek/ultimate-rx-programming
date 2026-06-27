@@ -9,8 +9,7 @@ title: Observables & Subscriptions
 # Lesson 1 · Observables & Subscriptions
 
 ---
-layout: default
-class: px-8
+layout: default-content
 ---
 
 ## Pull → Push
@@ -61,8 +60,7 @@ Once `error` or `complete` fires, the stream is **done forever** — no more val
 > The names differ; the contract is identical.
 
 ---
-layout: default
-class: px-8
+layout: default-content
 ---
 
 ## How to read a marble diagram
@@ -77,8 +75,7 @@ Throughout this course, streams are drawn as **marble diagrams**. Here's the vis
 />
 
 ---
-layout: default
-class: px-8
+layout: default-content
 ---
 
 ## Reading rules
@@ -123,8 +120,7 @@ Each marble's horizontal position is derived from `marble.time` — **no hardcod
 </v-click>
 
 ---
-layout: default
-class: px-8
+layout: default-content
 ---
 
 ### RxJS · TypeScript
@@ -132,8 +128,7 @@ class: px-8
 <<< @/snippets/lesson-1-observable.ts
 
 ---
-layout: default
-class: px-8
+layout: default-content
 ---
 
 ### Rx.NET · C#
@@ -149,8 +144,7 @@ class: px-8
 > ```
 
 ---
-layout: default
-class: px-8
+layout: default-content
 ---
 
 ## Cold by default — the most important property of an Observable
@@ -165,8 +159,7 @@ An Observable is **lazy**: nothing happens until you `subscribe`. And **each sub
 />
 
 ---
-layout: default
-class: px-8
+layout: default-content
 ---
 
 ## Cold vs Hot
@@ -185,8 +178,7 @@ class: px-8
 </v-click>
 
 ---
-layout: default
-class: px-8
+layout: default-content
 ---
 
 ## Summary
@@ -198,8 +190,7 @@ class: px-8
 - RxJS and Rx.NET share the same contract; only the surface API differs.
 
 ---
-layout: default
-class: px-8
+layout: default-content
 ---
 
 <QuizWidget :question-index="0" />

@@ -13,8 +13,7 @@ A **radio station** broadcasts to anyone tuned in — it doesn't start the song 
 A Subject is special because it plays **both** roles: it's an Observer (you call `next()` on it) *and* an Observable (others subscribe to it).
 
 ---
-layout: default
-class: px-8
+layout: default-content
 ---
 
 ## Cold vs Hot, side by side
@@ -26,8 +25,7 @@ class: px-8
 | Examples | `of`, `from`, `range`, `new Observable` | `Subject`, `BehaviorSubject`, `ReplaySubject` |
 
 ---
-layout: default
-class: px-8
+layout: default-content
 ---
 
 ## Subject types & cleanup
@@ -47,8 +45,7 @@ class: px-8
 </v-click>
 
 ---
-layout: default
-class: px-8
+layout: default-content
 ---
 
 ## Predict
@@ -70,8 +67,7 @@ class: px-8
 </v-click>
 
 ---
-layout: default
-class: px-8
+layout: default-content
 ---
 
 ## Reveal
@@ -93,8 +89,7 @@ class: px-8
 
 
 ---
-layout: default
-class: px-8
+layout: default-content
 ---
 
 ### RxJS · TypeScript · multicasting + cleanup
@@ -102,8 +97,7 @@ class: px-8
 <<< @/snippets/lesson-6-subject.ts
 
 ---
-layout: default
-class: px-8
+layout: default-content
 ---
 
 ### Rx.NET · C# · multicasting + cleanup
@@ -118,8 +112,7 @@ class: px-8
 > ```
 
 ---
-layout: default
-class: px-8
+layout: default-content
 ---
 
 ## Summary
@@ -130,8 +123,7 @@ class: px-8
 - You'll need `BehaviorSubject` next lesson — that's why we covered Subjects first.
 
 ---
-layout: default
-class: px-8
+layout: default-content
 ---
 
 <QuizWidget :question-index="5" />
