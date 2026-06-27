@@ -328,6 +328,38 @@ const quizQuestions: readonly QuizQuestion[] = [
       },
     ],
   },
+  // 10 — Lesson 11: exhaustMap
+  {
+    question:
+      'Two clicks (t=0, t=1) each spawn a 3-value inner (0.5s apart). ' +
+      'The output is: A1, A2, A3. The stream then completes. Which operator was used?',
+    options: [
+      {
+        text: 'switchMap — A3 was cancelled at t=1, so B1, B2, B3 appear instead. Output: A1, A2, B1, B2, B3.',
+        isCorrect: false,
+        explanation:
+          'switchMap cancels the previous inner when a new one arrives. With clicks at t=0 and t=1, A3 (scheduled at t=1.0) is cancelled; B1, B2, B3 take over. Five total values — not three.',
+      },
+      {
+        text: 'mergeMap — all six values (A1, A2, A3, B1, B2, B3) appear interleaved. Both inners run concurrently.',
+        isCorrect: false,
+        explanation:
+          'mergeMap subscribes to every inner simultaneously. B1 fires at t=1.5 alongside A3. Six values total — not three.',
+      },
+      {
+        text: 'concatMap — all six values appear sequentially (A1, A2, A3, B1, B2, B3) with a gap after A3. B1 is queued.',
+        isCorrect: false,
+        explanation:
+          'concatMap queues the second inner until the first completes. B1 is delayed until after A3, giving six sequential values — not three.',
+      },
+      {
+        text: 'exhaustMap — click-2 was ignored because inner-1 was still active. Only A1, A2, A3 reach the output.',
+        isCorrect: true,
+        explanation:
+          'Correct. exhaustMap ignores new source emissions while the current inner subscription is active. Click-2 at t=1.0 arrived during inner-1 (active until t=1.5) and was silently dropped. Only three values — A1, A2, A3 — appear in the output.',
+      },
+    ],
+  },
 ] as const;
 
 export default quizQuestions;

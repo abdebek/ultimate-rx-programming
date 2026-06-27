@@ -193,9 +193,9 @@ defineExpose({ selectOption, resetAnswer, isLocked });
         :class="{
           'quiz-widget__option--focused': !isLocked && i === focusedIndex,
           'quiz-widget__option--selected': selectedIndex === i,
-          'quiz-widget__option--correct': isLocked && option.isCorrect,
+          'quiz-widget__option--correct': isLocked && option.isCorrect && selectedOption?.isCorrect,
           'quiz-widget__option--incorrect': selectedIndex === i && !option.isCorrect,
-          'quiz-widget__option--muted': isLocked && selectedIndex !== i && !option.isCorrect,
+          'quiz-widget__option--muted': isLocked && selectedIndex !== i && (selectedOption?.isCorrect ? !option.isCorrect : true),
         }"
         role="option"
         :aria-selected="selectedIndex === i"
@@ -206,7 +206,7 @@ defineExpose({ selectOption, resetAnswer, isLocked });
           class="quiz-widget__marker shrink-0 w-5 font-bold text-center leading-5"
           aria-hidden="true"
         >
-          <template v-if="isLocked && option.isCorrect">✓</template>
+          <template v-if="selectedOption?.isCorrect && option.isCorrect">✓</template>
           <template v-else-if="selectedIndex === i && !option.isCorrect">✗</template>
           <template v-else>{{ String.fromCharCode(65 + i) }}</template>
         </span>
@@ -217,7 +217,7 @@ defineExpose({ selectOption, resetAnswer, isLocked });
     <transition name="quiz-widget__feedback">
       <div
         v-if="selectedOption"
-        class="quiz-widget__feedback mt-1.5 px-4 py-3 rounded-md border"
+        class="quiz-widget__feedback mt-1.5 ml-4 px-3 py-3 rounded-md border"
         :class="{
           'quiz-widget__feedback--correct': selectedOption.isCorrect,
           'quiz-widget__feedback--incorrect': !selectedOption.isCorrect,

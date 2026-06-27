@@ -66,15 +66,11 @@ src: ./slides/lesson-9-recap-and-final-quiz.md
 ---
 src: ./slides/lesson-10-concatmap.md
 ---
+
 ---
-layout: cover
-class: text-center
+src: ./slides/lesson-11-exhaustmap.md
 ---
 
-# You're done!
-
-Subscribe. React. Dispose.
-
-<div class="text-sm opacity-60 mt-8">
-  The contract is the same across RxJS and Rx.NET — you've learned both.
-</div>
+---
+src: ./slides/_done.md
+---
