@@ -1,6 +1,7 @@
 # add all files that needs to be ignore
 
 node_modules/
+dist/
 
 #  IDEs
 .vs/

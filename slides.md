@@ -62,3 +62,7 @@ src: ./slides/lesson-8-error-handling.md
 ---
 src: ./slides/lesson-9-recap-and-final-quiz.md
 ---
+
+---
+src: ./slides/lesson-10-concatmap.md
+---

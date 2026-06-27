@@ -126,6 +126,13 @@ let lastFrameTime = 0;
 
 const totalDuration = computed<number>(() => Math.max(props.duration, 0.001));
 
+const progressPct = computed<number>(() => {
+  if (totalDuration.value <= 0) return 0;
+  return Math.min(100, (currentTime.value / totalDuration.value) * 100);
+});
+
+
+
 // --- rAF loop -------------------------------------------------------------
 
 function cancelRaf(): void {
@@ -205,6 +212,52 @@ function step(): void {
   currentTime.value = timeline.value[revealCursor.value - 1].time;
   phase.value = revealCursor.value >= timeline.value.length ? 'done' : 'paused';
   cancelRaf();
+}
+
+// After 'done', show "✓ Done" on the button for 3s then swap to "↻ Replay".
+// Marbles stay visible until the user clicks to replay.
+const showDoneLabel = ref(true);
+let doneLabelTimer: ReturnType<typeof setTimeout> | null = null;
+
+watch(phase, (p) => {
+  if (p === 'done') {
+    showDoneLabel.value = true;
+    doneLabelTimer = setTimeout(() => { showDoneLabel.value = false; }, 3000);
+  } else {
+    showDoneLabel.value = true;
+    if (doneLabelTimer !== null) { clearTimeout(doneLabelTimer); doneLabelTimer = null; }
+  }
+});
+
+onBeforeUnmount(() => {
+  if (doneLabelTimer !== null) clearTimeout(doneLabelTimer);
+});
+
+// --- smart button ----------------------------------------------------------
+
+const controlLabel = computed<string>(() => {
+  switch (phase.value) {
+    case 'idle': return '▶ Play';
+    case 'playing': return '❚❚ Pause';
+    case 'paused': return '▶ Continue';
+    case 'done': return showDoneLabel.value ? '✓ Done' : '↻ Replay';
+  }
+});
+
+function onControlClick(): void {
+  switch (phase.value) {
+    case 'idle':
+    case 'paused':
+      play();
+      break;
+    case 'playing':
+      pause();
+      break;
+    case 'done':
+      reset();
+      play();
+      break;
+  }
 }
 
 defineExpose<AnimationControl>({ play, pause, reset, step });
@@ -330,7 +383,7 @@ onMounted(() => {
     </figcaption>
 
     <!-- diagram body: label column + track column -->
-    <div class="animated-marble__body grid gap-x-3" style="grid-template-columns: 5rem 1fr;">
+    <div class="animated-marble__body grid gap-x-3 gap-y-1" style="grid-template-columns: 5rem 1fr;">
       <!-- timeline ruler (spans the track column only) -->
       <div aria-hidden="true" />
       <div
@@ -386,16 +439,17 @@ onMounted(() => {
     </div>
 
     <!-- replay control -->
-    <div v-if="replay" class="animated-marble__controls mt-2 flex items-center gap-2 pl-[5.5rem]">
+    <div v-if="replay" class="animated-marble__controls mt-2 grid gap-x-3 gap-y-1" style="grid-template-columns: 5rem 1fr;">
+      <div aria-hidden="true" />
       <button
         type="button"
-        class="animated-marble__replay text-xs px-2.5 py-1 border rounded-md transition-colors duration-150"
-        :disabled="phase === 'idle'"
-        @click="reset(); play()"
+        class="animated-marble__replay text-xs px-3 py-1 border rounded-full transition-colors duration-150 justify-self-start ml-2"
+        :class="{ 'animated-marble__replay--done': phase === 'done' && showDoneLabel }"
+        :style="{ '--progress-pct': phase === 'done' && !showDoneLabel ? 0 : progressPct }"
+        @click="onControlClick"
       >
-        ↻ Replay
+        {{ controlLabel }}
       </button>
-      <span class="text-xs opacity-60">{{ phase }}</span>
     </div>
   </figure>
 </template>
@@ -511,19 +565,34 @@ onMounted(() => {
 }
 
 .animated-marble__replay {
+  position: relative;
   border-color: var(--ui-border);
   background: var(--ui-bg);
   color: var(--ui-fg);
+  background-image: linear-gradient(
+    to right,
+    color-mix(in srgb, var(--role-source) 25%, transparent),
+    color-mix(in srgb, var(--role-source) 25%, transparent)
+  );
+  background-repeat: no-repeat;
+  background-size: calc(var(--progress-pct, 0) * 1%) 100%;
+  transition: background-size 200ms linear;
+  overflow: hidden;
+  z-index: 0;
 }
 .animated-marble__replay:hover:not(:disabled),
 .animated-marble__replay:focus-visible:not(:disabled) {
   border-color: var(--ui-focus);
   outline: none;
 }
-.animated-marble__replay:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
+
+.animated-marble__replay--done {
+  background: var(--role-fallback);
+  color: var(--role-fallback-fg);
+  border-color: transparent;
 }
+
+
 
 @media (prefers-reduced-motion: reduce) {
   .animated-marble__marble,

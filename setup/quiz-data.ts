@@ -297,6 +297,37 @@ const quizQuestions: readonly QuizQuestion[] = [
       },
     ],
   },
+  // 9 — Lesson 10: concatMap
+  {
+    question:
+      'Three file uploads are queued with concatMap: file A (5s upload), file B (5s), file C (5s). What happens to file B?',
+    options: [
+      {
+        text: 'file B starts after file A completes — all three uploads run one at a time.',
+        isCorrect: true,
+        explanation:
+          'Correct. concatMap queues inner subscriptions and processes them sequentially. file B waits for file A to complete before starting, and file C waits for file B. Total time: 15s.',
+      },
+      {
+        text: 'file B is cancelled the moment file C is queued.',
+        isCorrect: false,
+        explanation:
+          'This is switchMap behavior — cancel-and-replace. concatMap does not cancel; it queues. file B will still run after file A, regardless of whether file C is in the queue.',
+      },
+      {
+        text: 'file B starts immediately, running concurrently with file A.',
+        isCorrect: false,
+        explanation:
+          'This is mergeMap/SelectMany behavior — concurrent execution. concatMap serializes: it waits for file A to complete before starting file B.',
+      },
+      {
+        text: 'file B is ignored — concatMap discards emissions while an inner is active.',
+        isCorrect: false,
+        explanation:
+          'This is exhaustMap behavior — ignore new emissions while the current inner is active. concatMap queues them instead.',
+      },
+    ],
+  },
 ] as const;
 
 export default quizQuestions;
