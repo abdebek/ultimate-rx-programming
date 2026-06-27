@@ -55,16 +55,23 @@ const selectedOption = computed(() =>
     : null,
 );
 
-const correctIndex = computed<number>(() => {
-  const idx = question.value.options.findIndex((o) => o.isCorrect);
-  if (idx === -1) {
-    throw new Error(
-      `QuizWidget: question "${question.value.question}" has no correct option. ` +
-        `Every QuizQuestion must have exactly one option with isCorrect: true.`,
-    );
-  }
-  return idx;
-});
+// Runtime guard: validate that the current question has exactly one
+// correct option. Computed values only execute when read, and the
+// template checks option.isCorrect per-option (not correctIndex), so
+// we use a watch to force the guard to actually run on question change.
+watch(
+  () => props.questionIndex,
+  () => {
+    const idx = question.value.options.findIndex((o) => o.isCorrect);
+    if (idx === -1) {
+      throw new Error(
+        `QuizWidget: question "${question.value.question}" has no correct option. ` +
+          `Every QuizQuestion must have exactly one option with isCorrect: true.`,
+      );
+    }
+  },
+  { immediate: true },
+);
 
 // --- actions --------------------------------------------------------------
 

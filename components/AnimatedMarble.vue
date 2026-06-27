@@ -98,33 +98,12 @@ function isLaneVisible(lane: number): boolean {
  * were already shown — but in practice predict slides hide the output
  * lane entirely, so there's nothing to reveal on that lane).
  */
-const schedule = computed<readonly Marble[]>(() => {
-  const all: Marble[] = [];
-  for (const stream of props.streams) {
-    if (!isLaneVisible(stream.laneFromFirstEmission)) continue;
-    for (const e of stream.emissions) all.push(e);
-  }
-  all.sort((a, b) => a.time - b.time);
-  return all;
-});
-
-// Augment Stream with a tiny helper used above. We keep this local rather
-// than polluting the public Stream interface in setup/types.ts.
-declare module '../setup/types' {
-  interface Stream {
-    readonly laneFromFirstEmission: number;
-  }
-}
-
-// The above module augmentation is a *type-level* convenience. At runtime
-// we compute the lane from the stream's emissions directly:
 function streamLane(stream: Stream): number {
   if (stream.emissions.length === 0) return 0;
   return stream.emissions[0].lane;
 }
 
-// Re-implement schedule without the augmentation (cleaner, no phantom field):
-const schedule2 = computed<readonly Marble[]>(() => {
+const timeline = computed<readonly Marble[]>(() => {
   const all: Marble[] = [];
   for (const stream of props.streams) {
     if (!isLaneVisible(streamLane(stream))) continue;
@@ -133,9 +112,6 @@ const schedule2 = computed<readonly Marble[]>(() => {
   all.sort((a, b) => a.time - b.time);
   return all;
 });
-
-// Use the clean version going forward.
-const timeline = schedule2;
 
 // --- playback state -------------------------------------------------------
 
@@ -149,9 +125,6 @@ const rafHandle = shallowRef<number | null>(null);
 let lastFrameTime = 0;
 
 const totalDuration = computed<number>(() => Math.max(props.duration, 0.001));
-const isDone = computed<boolean>(
-  () => revealCursor.value >= timeline.value.length && phase.value !== 'playing',
-);
 
 // --- rAF loop -------------------------------------------------------------
 
@@ -351,63 +324,69 @@ onMounted(() => {
     :aria-label="title"
   >
     <figcaption
-      class="animated-marble__title text-sm font-medium mb-2 opacity-80"
+      class="animated-marble__title text-sm font-medium mb-3 opacity-80"
     >
       {{ title }}
     </figcaption>
 
-    <!-- timeline ruler -->
-    <div
-      class="animated-marble__ruler relative h-1 mb-2 rounded-full"
-      aria-hidden="true"
-    />
+    <!-- diagram body: label column + track column -->
+    <div class="animated-marble__body grid gap-x-3" style="grid-template-columns: 5rem 1fr;">
+      <!-- timeline ruler (spans the track column only) -->
+      <div aria-hidden="true" />
+      <div
+        class="animated-marble__ruler relative h-1.5 mb-2 rounded-full"
+        aria-hidden="true"
+      />
 
-    <ol
-      class="animated-marble__lanes list-none m-0 p-0 flex flex-col gap-3"
-      :style="{ '--lane-count': laneCount }"
-    >
-      <li
-        v-for="lane in laneCount"
-        :key="lane - 1"
-        class="animated-marble__lane relative h-10 rounded-full"
-        :class="{
-          'animated-marble__lane--hidden': !isLaneVisible(lane - 1),
-        }"
-        :aria-hidden="!isLaneVisible(lane - 1) ? 'true' : undefined"
-      >
-        <!-- lane label + the stream's marbles, only for visible lanes -->
-        <template v-for="stream in streams" :key="stream.id">
-          <template v-if="streamLane(stream) === lane - 1 && isLaneVisible(lane - 1)">
-            <span
-              class="animated-marble__lane-label absolute -left-0.5 -top-0.5 text-xs font-mono opacity-70"
-            >{{ stream.id }}</span>
-            <span
-              v-if="showsCompletion(stream)"
-              class="animated-marble__completion"
-              :style="{ left: marbleLeft(stream.emissions[stream.emissions.length - 1]) }"
-              aria-hidden="true"
-            >|</span>
-            <span
-              v-for="marble in stream.emissions"
-              :key="marble.id"
-              class="animated-marble__marble"
-              :class="[
-                `animated-marble__marble--${marble.role}`,
-                {
-                  'animated-marble__marble--pending': !isMarbleRevealed(marble),
-                  'animated-marble__marble--error': marble.role === 'error' && marble.value === '✖',
-                },
-              ]"
-              :style="{ left: marbleLeft(marble) }"
-              :aria-label="`${marble.value} at t=${marble.time}s`"
-            >{{ marble.value }}</span>
+      <!-- lanes -->
+      <template v-for="lane in laneCount" :key="lane - 1">
+        <!-- label cell -->
+        <div
+          class="animated-marble__lane-label flex items-center justify-end pr-2 text-xs font-mono opacity-70"
+          :class="{ 'animated-marble__lane-label--hidden': !isLaneVisible(lane - 1) }"
+          :aria-hidden="!isLaneVisible(lane - 1) ? 'true' : undefined"
+        >
+          <template v-for="stream in streams" :key="stream.id">
+            <span v-if="streamLane(stream) === lane - 1">{{ stream.id }}</span>
           </template>
-        </template>
-      </li>
-    </ol>
+        </div>
+
+        <!-- track cell -->
+        <div
+          class="animated-marble__lane relative rounded-full"
+          :class="{ 'animated-marble__lane--hidden': !isLaneVisible(lane - 1) }"
+          :aria-hidden="!isLaneVisible(lane - 1) ? 'true' : undefined"
+        >
+          <template v-for="stream in streams" :key="stream.id">
+            <template v-if="streamLane(stream) === lane - 1 && isLaneVisible(lane - 1)">
+              <span
+                v-if="showsCompletion(stream)"
+                class="animated-marble__completion"
+                :style="{ left: marbleLeft(stream.emissions[stream.emissions.length - 1]) }"
+                aria-hidden="true"
+              >|</span>
+              <span
+                v-for="marble in stream.emissions"
+                :key="marble.id"
+                class="animated-marble__marble"
+                :class="[
+                  `animated-marble__marble--${marble.role}`,
+                  {
+                    'animated-marble__marble--pending': !isMarbleRevealed(marble),
+                    'animated-marble__marble--error': marble.role === 'error' && marble.value === '✖',
+                  },
+                ]"
+                :style="{ left: marbleLeft(marble) }"
+                :aria-label="`${marble.value} at t=${marble.time}s`"
+              >{{ marble.value }}</span>
+            </template>
+          </template>
+        </div>
+      </template>
+    </div>
 
     <!-- replay control -->
-    <div v-if="replay" class="animated-marble__controls mt-3 flex items-center gap-2">
+    <div v-if="replay" class="animated-marble__controls mt-4 flex items-center gap-2 pl-[5.5rem]">
       <button
         type="button"
         class="animated-marble__replay text-xs px-2.5 py-1 border rounded-md transition-colors duration-150"
@@ -438,6 +417,15 @@ onMounted(() => {
 
 .animated-marble {
   --marble-size: 2rem;
+  --lane-height: 2.75rem;
+}
+
+.animated-marble__body {
+  /*
+   * Grid: label column (5rem) + track column (1fr).
+   * The ruler and each lane are split into label-cell + track-cell
+   * so the timeline area aligns perfectly across rows.
+   */
 }
 
 .animated-marble__ruler {
@@ -445,6 +433,7 @@ onMounted(() => {
 }
 
 .animated-marble__lane {
+  height: var(--lane-height);
   background: var(--track-bg);
   border: 1px solid color-mix(in srgb, var(--track-ruler) 40%, transparent);
 }
@@ -456,8 +445,13 @@ onMounted(() => {
 }
 
 .animated-marble__lane-label {
-  /* sits just above the lane line, monospace for stream IDs like user$ */
-  line-height: 1;
+  height: var(--lane-height);
+  line-height: 1.2;
+  text-align: right;
+}
+
+.animated-marble__lane-label--hidden {
+  opacity: 0.3;
 }
 
 /*

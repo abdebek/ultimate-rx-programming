@@ -1,0 +1,22 @@
+{
+  "name": "ultimate-rx-programming",
+  "type": "module",
+  "version": "0.1.0",
+  "private": true,
+  "description": "An interactive Slidev course teaching the fundamentals of Reactive Programming with marble-diagram animations and quizzes.",
+  "scripts": {
+    "dev": "slidev --open",
+    "build": "slidev build",
+    "export": "slidev export",
+    "export-pptx": "slidev export --format pptx"
+  },
+  "dependencies": {
+    "@slidev/cli": "^52.16.0",
+    "@slidev/client": "^52.16.0",
+    "@slidev/theme-default": "^0.25.0",
+    "vue": "^3.5.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.0"
+  }
+}
