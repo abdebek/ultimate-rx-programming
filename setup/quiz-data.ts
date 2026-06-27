@@ -360,6 +360,99 @@ const quizQuestions: readonly QuizQuestion[] = [
       },
     ],
   },
+  // 11 — Lesson 12: Four Horsemen recap
+  {
+    question:
+      'An autocomplete search fires a 200ms API call per keystroke. The user types "rea" → "reac" → "react" within 300ms. You want to show only the latest results. Which operator?',
+    options: [
+      {
+        text: 'switchMap — each new keystroke cancels the previous search. Only "react" results reach the view.',
+        isCorrect: true,
+        explanation:
+          'Correct. switchMap cancels the previous inner subscription when a new source emission arrives. The "rea" and "reac" requests are torn down before they complete; only "react" runs to completion and updates the view. This is the canonical typeahead pattern.',
+      },
+      {
+        text: 'mergeMap — all three searches run concurrently. Results arrive in any order.',
+        isCorrect: false,
+        explanation:
+          'mergeMap runs all inners in parallel. The slowest request might finish after the user has moved on, and results could arrive out of order ("react" data shown, then "rea" data overwrites it). This causes a race condition.',
+      },
+      {
+        text: 'concatMap — all three searches run sequentially. The view is always correct but laggy.',
+        isCorrect: false,
+        explanation:
+          'concatMap guarantees order but queues the requests. "reac" waits for "rea" to complete, then "react" waits for "reac". The user sees outdated results until all three finish — a poor UX for autocomplete.',
+      },
+      {
+        text: 'exhaustMap — only the first search ("rea") runs. The remaining keystrokes are ignored.',
+        isCorrect: false,
+        explanation:
+          'exhaustMap ignores new emissions while the current inner is active. Once "rea" completes (200ms later), "reac" has already been typed and ignored. The view shows stale "rea" results instead of "react". Not suitable for autocomplete.',
+      },
+    ],
+  },
+  // 12 — Practice: concatMap (process every emission, no overlap)
+  {
+    question:
+      'A stock ticker WebSocket emits a price every 100ms. Each price triggers a 300ms calculation that must run to completion. You must process EVERY price without overlapping calculations. Which operator?',
+    options: [
+      {
+        text: 'concatMap — queues each price and processes them one at a time. Every price is calculated, no overlap.',
+        isCorrect: true,
+        explanation:
+          'Correct. concatMap ensures sequential processing with no overlap while guaranteeing every emission is handled. The queue may grow if prices arrive faster than 300ms, but every price is eventually processed. mergeMap would overlap; switchMap would cancel mid-calculation; exhaustMap would ignore most prices.',
+      },
+      {
+        text: 'switchMap — cancels the current calculation when a new price arrives. Only the latest price is calculated.',
+        isCorrect: false,
+        explanation:
+          'switchMap cancels the 300ms calculation whenever a new price arrives (every 100ms). Since each cancellation tears down the in-progress work, NO calculation ever finishes. The subscriber gets nothing.',
+      },
+      {
+        text: 'mergeMap — runs all calculations concurrently. Every price is processed, but calculations overlap.',
+        isCorrect: false,
+        explanation:
+          'mergeMap runs every calculation in parallel. With prices arriving every 100ms and calculations taking 300ms, you would have ~3 overlapping calculations at any time. This violates the "no overlap" constraint.',
+      },
+      {
+        text: 'exhaustMap — ignores new prices while a calculation is running. Most prices are skipped.',
+        isCorrect: false,
+        explanation:
+          'exhaustMap ignores emissions that arrive while the current inner is active. Since calculations take 300ms and prices arrive every 100ms, roughly 2 out of every 3 prices would be ignored. This violates "process EVERY price."',
+      },
+    ],
+  },
+  // 13 — Practice: exhaustMap (skip duplicates while active)
+  {
+    question:
+      'An API health check polls every 60 seconds. Each check takes ~3 seconds. If a check is in-flight when the next 60s tick fires, you want to skip that tick (the next tick will catch it). Which operator?',
+    options: [
+      {
+        text: 'exhaustMap — ignores the second tick while the health check is in-flight. No duplicate work.',
+        isCorrect: true,
+        explanation:
+          'Correct. exhaustMap drops the new source emission because the current inner is still active. The health check runs to completion, and the next tick 60s later will fire another check. No overlap, no wasted requests, no backlog.',
+      },
+      {
+        text: 'switchMap — cancels the in-flight health check and starts a new one. The cancelled check was wasted work.',
+        isCorrect: false,
+        explanation:
+          'switchMap cancels the in-flight check when the next tick arrives. The cancelled check (already 3s in) never completes — a waste. It would also reset the timer, potentially delaying detection of failures.',
+      },
+      {
+        text: 'mergeMap — starts a new check alongside the in-flight one. Two concurrent checks, doubling network load.',
+        isCorrect: false,
+        explanation:
+          'mergeMap runs both checks concurrently. With a 3s check every 60s, overlap is rare but wasteful when it happens. The requirement is to "skip that tick," not run two checks.',
+      },
+      {
+        text: 'concatMap — queues the second check and runs it after the first completes. Creates a backlog.',
+        isCorrect: false,
+        explanation:
+          'concatMap queues the second check. After the first completes (3s), the queued check starts immediately (3s more). If the next tick fires 60s later, it too gets queued. Over time, the backlog grows unbounded — not what you want for a periodic poll.',
+      },
+    ],
+  },
 ] as const;
 
 export default quizQuestions;

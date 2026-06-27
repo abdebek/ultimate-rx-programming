@@ -72,5 +72,9 @@ src: ./slides/lesson-11-exhaustmap.md
 ---
 
 ---
+src: ./slides/lesson-12-four-horsemen.md
+---
+
+---
 src: ./slides/_done.md
 ---
