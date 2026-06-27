@@ -1,0 +1,9 @@
+# add all files that needs to be ignore
+
+#  IDEs
+.vs/
+.vscode/
+
+
+# misc
+.temp/
