@@ -3,7 +3,7 @@
  *
  * Strict TypeScript — no `any`, no untyped assertions. Every interface here
  * is consumed by at least one of:
- *   - components/AnimatedMarble.vue   (Marble, Stream, MarbleColor, AnimationControl)
+ *   - components/AnimatedMarble.vue   (Marble, Stream, MarbleRole, AnimationControl)
  *   - components/QuizWidget.vue        (QuizOption, QuizQuestion)
  *   - setup/quiz-data.ts              (QuizQuestion[])
  *   - lesson markdown via <AnimatedMarble> / <QuizWidget> props
@@ -13,29 +13,36 @@
  */
 
 /**
- * The seven semantic marble colors used across every lesson.
+ * The seven semantic roles a marble can play on a diagram.
  *
- * The meaning is committed and taught on the Lesson 1 legend slide:
- *   - blue   → source / input stream
- *   - purple → inner streams (higher-order mapping)
- *   - amber  → output / transformed result
- *   - green  → fallback / recovery (error handling ONLY)
- *   - red    → error (terminal failure)
- *   - gray   → filtered out / discarded
- *   - teal   → hot / multicast / Subject
+ * A role names *what the marble means*, not what color it is. The actual
+ * color is a view-mode-dependent implementation detail owned by
+ * styles/tokens.css: each role maps to a `--role-<name>` CSS custom
+ * property that has separate light and dark values. If we later decide
+ * "source" should render indigo instead of blue, we change ONE line in
+ * tokens.css — no component, no lesson, no generator touches a color.
  *
- * The corresponding CSS custom properties (--marble-<color>) are defined in
- * styles/marble.css with light AND dark variants, so a single color token
- * renders readably in both Slidev themes.
+ * The roles are committed and taught on the Lesson 1 legend slide:
+ *   - source    → source / input stream
+ *   - inner     → inner streams (higher-order mapping)
+ *   - output    → output / transformed result
+ *   - fallback  → fallback / recovery (error handling ONLY)
+ *   - error     → error (terminal failure)
+ *   - discarded → filtered out / discarded
+ *   - hot       → hot / multicast / Subject
+ *
+ * Components consume `--role-<name>` and `--role-<name>-fg` (text color
+ * for legibility on the role's fill) via the MarbleRole → class mapping
+ * in AnimatedMarble.vue. Neither layer knows the literal color.
  */
-export type MarbleColor =
-  | 'blue'
-  | 'purple'
-  | 'amber'
-  | 'green'
-  | 'red'
-  | 'gray'
-  | 'teal';
+export type MarbleRole =
+  | 'source'
+  | 'inner'
+  | 'output'
+  | 'fallback'
+  | 'error'
+  | 'discarded'
+  | 'hot';
 
 /**
  * A single emission on a marble diagram.
@@ -60,7 +67,7 @@ export interface Marble {
   readonly value: string;
   readonly time: number;
   readonly lane: number;
-  readonly color: MarbleColor;
+  readonly role: MarbleRole;
 }
 
 /**
@@ -70,7 +77,7 @@ export interface Marble {
  * `emissions` is the ordered, immutable list of marbles on this lane.
  * `complete` — when true, the lane renders a `|` completion marker at
  *   the time of its last emission. A stream that errors instead of
- *   completing is represented by a Marble whose `color` is `'red'`
+ *   completing is represented by a Marble whose `role` is `'error'`
  *   and whose `value` is `'✖'`; that marble is terminal and the lane
  *   does not also render `|`.
  *

@@ -241,69 +241,46 @@ defineExpose({ selectOption, resetAnswer, isLocked });
  * and dark-mode are handled by UnoCSS utilities in the template (Slidev
  * ships UnoCSS as a core dependency, so this adds zero new deps).
  *
- * Colors use Tailwind's default palette via dark: variants in the class
- * bindings below; this block just wires the state → class mapping that's
- * awkward to express as concatenated utility strings.
+ * Colors come from shared tokens in styles/tokens.css (imported once via
+ * Slidev's styles/ directory convention — no per-component import needed).
+ * Dark mode is handled at the token level (:root vs .dark), so this block
+ * has NO :global(.dark) overrides — it just wires state → token.
  */
 
 .quiz-widget__option {
-  border-color: #d9dee2;
-  background: #ffffff;
-  color: #1f2933;
-}
-:global(.dark) .quiz-widget__option {
-  border-color: #334155;
-  background: #1a1f2e;
-  color: #e2e8f0;
+  border-color: var(--ui-border);
+  background: var(--ui-bg);
+  color: var(--ui-fg);
 }
 
 .quiz-widget__option:focus-visible {
-  outline: 2px solid #2563eb;
+  outline: 2px solid var(--ui-focus);
   outline-offset: 2px;
-}
-:global(.dark) .quiz-widget__option:focus-visible {
-  outline-color: #60a5fa;
 }
 
 .quiz-widget__option--focused {
-  border-color: #2563eb;
-  background: color-mix(in srgb, #2563eb 8%, #ffffff);
-}
-:global(.dark) .quiz-widget__option--focused {
-  border-color: #60a5fa;
-  background: color-mix(in srgb, #60a5fa 12%, #1a1f2e);
+  border-color: var(--ui-focus);
+  background: color-mix(in srgb, var(--ui-focus) 10%, var(--ui-bg));
 }
 
 /* Hover only when the option is still pickable (not locked, not the chosen one). */
 .quiz-widget__option:not(.quiz-widget__option--selected):not(.quiz-widget__option--correct):not(.quiz-widget__option--muted):hover {
-  border-color: #2563eb;
-}
-:global(.dark) .quiz-widget__option:not(.quiz-widget__option--selected):not(.quiz-widget__option--correct):not(.quiz-widget__option--muted):hover {
-  border-color: #60a5fa;
+  border-color: var(--ui-focus);
 }
 
 .quiz-widget__option--selected,
 .quiz-widget__option--incorrect {
-  border-color: #ef4444;
-  background: #fef2f2;
-  color: #991b1b;
+  border-color: var(--ui-incorrect-border);
+  background: var(--ui-incorrect-bg);
+  color: var(--ui-incorrect-fg);
   cursor: default;
-}
-:global(.dark) .quiz-widget__option--selected,
-:global(.dark) .quiz-widget__option--incorrect {
-  background: rgba(239, 68, 68, 0.15);
-  color: #fca5a5;
 }
 
 .quiz-widget__option--correct {
-  border-color: #10b981;
-  background: #ecfdf5;
-  color: #065f46;
+  border-color: var(--ui-correct-border);
+  background: var(--ui-correct-bg);
+  color: var(--ui-correct-fg);
   cursor: default;
-}
-:global(.dark) .quiz-widget__option--correct {
-  background: rgba(16, 185, 129, 0.15);
-  color: #6ee7b7;
 }
 
 .quiz-widget__option--muted {
@@ -313,54 +290,32 @@ defineExpose({ selectOption, resetAnswer, isLocked });
 
 /* Feedback panel — border/bg per verdict. Text color inherits from above. */
 .quiz-widget__feedback {
-  border-color: #d9dee2;
-  background: #ffffff;
-}
-:global(.dark) .quiz-widget__feedback {
-  border-color: #334155;
-  background: #1a1f2e;
+  border-color: var(--ui-border);
+  background: var(--ui-bg);
 }
 
 .quiz-widget__feedback--correct {
-  border-color: #10b981;
-  background: #ecfdf5;
-  color: #065f46;
-}
-:global(.dark) .quiz-widget__feedback--correct {
-  background: rgba(16, 185, 129, 0.15);
-  color: #6ee7b7;
+  border-color: var(--ui-correct-border);
+  background: var(--ui-correct-bg);
+  color: var(--ui-correct-fg);
 }
 
 .quiz-widget__feedback--incorrect {
-  border-color: #ef4444;
-  background: #fef2f2;
-  color: #991b1b;
-}
-:global(.dark) .quiz-widget__feedback--incorrect {
-  background: rgba(239, 68, 68, 0.15);
-  color: #fca5a5;
+  border-color: var(--ui-incorrect-border);
+  background: var(--ui-incorrect-bg);
+  color: var(--ui-incorrect-fg);
 }
 
 .quiz-widget__retry {
-  border-color: #d9dee2;
-  background: #ffffff;
-  color: #1f2933;
-}
-:global(.dark) .quiz-widget__retry {
-  border-color: #334155;
-  background: #1a1f2e;
-  color: #e2e8f0;
+  border-color: var(--ui-border);
+  background: var(--ui-bg);
+  color: var(--ui-fg);
 }
 .quiz-widget__retry:hover,
 .quiz-widget__retry:focus-visible {
-  border-color: #2563eb;
+  border-color: var(--ui-focus);
   outline: none;
-  background: color-mix(in srgb, #2563eb 10%, #ffffff);
-}
-:global(.dark) .quiz-widget__retry:hover,
-:global(.dark) .quiz-widget__retry:focus-visible {
-  border-color: #60a5fa;
-  background: color-mix(in srgb, #60a5fa 14%, #1a1f2e);
+  background: color-mix(in srgb, var(--ui-focus) 12%, var(--ui-bg));
 }
 
 /* Vue transition for the feedback panel. */

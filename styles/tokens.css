@@ -1,0 +1,120 @@
+/*
+ * Design tokens for the Reactive Programming course.
+ *
+ * Every name in this file describes a FEATURE or ROLE, never a color.
+ * Components consume var(--<feature>) and stay completely agnostic of
+ * the actual hue — which means changing the palette (or adapting to a
+ * new theme, brand, or accessibility standard) is a ONE-FILE edit.
+ *
+ * Light values live on :root; dark values override under .dark
+ * (Slidev applies .dark to <html> when dark mode is active). Both
+ * palettes are chosen for WCAG AA contrast on their respective
+ * backgrounds.
+ *
+ * Two families of tokens:
+ *
+ *   --ui-*       surface controls (options, buttons, feedback panels)
+ *   --role-*     marble diagram roles (source / inner / output / ...)
+ *                each role has a fill (--role-<name>), a foreground
+ *                (--role-<name>-fg) for legible text on the fill, and
+ *                an optional border (--role-<name>-border).
+ */
+
+:root {
+  /* --- UI surface ------------------------------------------------------- */
+  --ui-bg: #ffffff;
+  --ui-fg: #1f2933;
+  --ui-muted: #627d98;
+  --ui-border: #d9dee2;
+  --ui-focus: #2563eb;
+
+  --ui-correct-bg: #ecfdf5;
+  --ui-correct-fg: #065f46;
+  --ui-correct-border: #10b981;
+
+  --ui-incorrect-bg: #fef2f2;
+  --ui-incorrect-fg: #991b1b;
+  --ui-incorrect-border: #ef4444;
+
+  --ui-muted-bg: #f3f4f6;
+
+  /* --- marble diagram track (not a role — it's the canvas) -------------- */
+  --track-bg: #e5e7eb;
+  --track-ruler: #9ca3af;
+
+  /* --- marble roles (light) --------------------------------------------- */
+  --role-source: #3b82f6;
+  --role-source-fg: #ffffff;
+  --role-source-border: transparent;
+
+  --role-inner: #8b5cf6;
+  --role-inner-fg: #ffffff;
+  --role-inner-border: transparent;
+
+  --role-output: #f59e0b;
+  --role-output-fg: #1f2933;
+  --role-output-border: transparent;
+
+  --role-fallback: #10b981;
+  --role-fallback-fg: #ffffff;
+  --role-fallback-border: transparent;
+
+  --role-error: #ef4444;
+  --role-error-fg: #ffffff;
+  --role-error-border: transparent;
+
+  --role-discarded: #9ca3af;
+  --role-discarded-fg: #ffffff;
+  --role-discarded-border: transparent;
+
+  --role-hot: #14b8a6;
+  --role-hot-fg: #ffffff;
+  --role-hot-border: transparent;
+}
+
+.dark {
+  /* --- UI surface (dark) ------------------------------------------------ */
+  --ui-bg: #1a1f2e;
+  --ui-fg: #e2e8f0;
+  --ui-muted: #94a3b8;
+  --ui-border: #334155;
+  --ui-focus: #60a5fa;
+
+  --ui-correct-bg: rgba(16, 185, 129, 0.15);
+  --ui-correct-fg: #6ee7b7;
+  --ui-correct-border: #10b981;
+
+  --ui-incorrect-bg: rgba(239, 68, 68, 0.15);
+  --ui-incorrect-fg: #fca5a5;
+  --ui-incorrect-border: #ef4444;
+
+  --ui-muted-bg: rgba(148, 163, 184, 0.12);
+
+  /* --- marble diagram track (dark) -------------------------------------- */
+  --track-bg: #374151;
+  --track-ruler: #6b7280;
+
+  /* --- marble roles (dark) ---------------------------------------------- *
+   * Brighter, slightly desaturated hues so marbles read well on the
+   * dark track without glaring. Foreground colors darken for contrast. */
+  --role-source: #60a5fa;
+  --role-source-fg: #0f172a;
+
+  --role-inner: #a78bfa;
+  --role-inner-fg: #1e1b4b;
+
+  --role-output: #fbbf24;
+  --role-output-fg: #1f2933;
+
+  --role-fallback: #34d399;
+  --role-fallback-fg: #064e3b;
+
+  --role-error: #f87171;
+  --role-error-fg: #450a0a;
+
+  --role-discarded: #94a3b8;
+  --role-discarded-fg: #1e293b;
+
+  --role-hot: #2dd4bf;
+  --role-hot-fg: #042f2e;
+}

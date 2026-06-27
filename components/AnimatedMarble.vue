@@ -27,12 +27,10 @@
  *   - No GSAP / Motion One / Anime.js / VueUse. Only Vue 3 + standard DOM.
  *
  * Dark mode:
- *   - Palette is defined as CSS custom properties (--marble-<color>) in
- *     styles/marble.css (Phase 4) with light + dark variants. This
- *     component consumes them via `var(--marble-<color>)` and adds a
- *     handful of scoped layout rules. useDarkMode() is used only to
- *     force a re-evaluation of the timeline ruler tick color in JS-driven
- *     rendering paths; CSS handles the rest.
+ *   - Palette is defined as role-named CSS custom properties (--role-<name>)
+ *     in styles/tokens.css with light AND dark variants. This component
+ *     consumes them via `var(--role-<name>)` and stays agnostic of the
+ *     actual hue — changing a role's color is a one-line edit in tokens.css.
  */
 import {
   computed,
@@ -330,13 +328,13 @@ function showsCompletion(stream: Stream): boolean {
   if (!stream.complete) return false;
   if (stream.emissions.length === 0) return true;
   const last = stream.emissions[stream.emissions.length - 1];
-  return !(last.color === 'red' && last.value === '✖');
+  return !(last.role === 'error' && last.value === '✖');
 }
 
 // Re-render the timeline ruler ticks when dark mode toggles, since the
-// tick color is set via JS for crispness on hidpi screens.
+// tick color comes from CSS via --track-ruler
 watch(isDark, () => {
-  /* no-op: tick color comes from CSS via --marble-ruler */
+  /* no-op: tick color comes from CSS via --track-ruler */
 });
 
 // Initial mount: the isActive watcher with `immediate: true` handles
@@ -394,10 +392,10 @@ onMounted(() => {
               :key="marble.id"
               class="animated-marble__marble"
               :class="[
-                `animated-marble__marble--${marble.color}`,
+                `animated-marble__marble--${marble.role}`,
                 {
                   'animated-marble__marble--pending': !isMarbleRevealed(marble),
-                  'animated-marble__marble--error': marble.color === 'red' && marble.value === '✖',
+                  'animated-marble__marble--error': marble.role === 'error' && marble.value === '✖',
                 },
               ]"
               :style="{ left: marbleLeft(marble) }"
@@ -425,39 +423,36 @@ onMounted(() => {
 
 <style scoped>
 /*
- * Layout + structural styling lives here. The marble color palette is
- * NOT defined here — it comes from CSS custom properties (--marble-<color>)
- * in styles/marble.css (Phase 4), which has light + dark variants. This
- * keeps the palette centralized and consistent with the legend slide.
+ * Layout + structural styling lives here. ALL colors come from shared
+ * tokens in styles/tokens.css (imported once via Slidev's styles/
+ * directory convention). Dark mode is handled at the token level
+ * (:root vs .dark), so this block has NO :global(.dark) overrides and
+ * NO hardcoded hex values. The legend slide and every marble diagram
+ * share the same palette via these tokens.
  *
- * If this component is ever used outside the Slidev project (e.g. in a
- * test), the fallback values below ensure it still renders readably
- * without the global stylesheet.
+ * Token families:
+ *   --track-bg / --track-ruler  — the canvas (lanes + timeline ruler)
+ *   --role-<name>[-fg|-border]  — marble roles (source/inner/output/...)
+ *   --ui-*                      — surface controls (replay button, etc.)
  */
 
 .animated-marble {
   --marble-size: 2rem;
-  --marble-track-bg: #e5e7eb;
-  --marble-ruler: #9ca3af;
-}
-:global(.dark) .animated-marble {
-  --marble-track-bg: #374151;
-  --marble-ruler: #6b7280;
 }
 
 .animated-marble__ruler {
-  background: var(--marble-ruler);
+  background: var(--track-ruler);
 }
 
 .animated-marble__lane {
-  background: var(--marble-track-bg);
-  border: 1px solid color-mix(in srgb, var(--marble-ruler) 40%, transparent);
+  background: var(--track-bg);
+  border: 1px solid color-mix(in srgb, var(--track-ruler) 40%, transparent);
 }
 
 .animated-marble__lane--hidden {
   background: transparent;
   border-style: dashed;
-  border-color: color-mix(in srgb, var(--marble-ruler) 25%, transparent);
+  border-color: color-mix(in srgb, var(--track-ruler) 25%, transparent);
 }
 
 .animated-marble__lane-label {
@@ -471,6 +466,10 @@ onMounted(() => {
  * transform + opacity, toggled by the --pending class. This means the
  * browser compositor handles the motion — no JS per-frame work needed
  * for the actual animation, only for deciding WHEN to reveal.
+ *
+ * The per-role classes below set the --marble-* local aliases that this
+ * base rule consumes. Keeping the indirection means the base rule never
+ * names a role directly — adding/removing a role is a one-class edit.
  */
 .animated-marble__marble {
   position: absolute;
@@ -487,9 +486,9 @@ onMounted(() => {
   font-weight: 600;
   line-height: 1;
   text-align: center;
-  background: var(--marble-bg, #cbd5e1);
-  color: var(--marble-fg, #0f172a);
-  border: 2px solid var(--marble-border, transparent);
+  background: var(--marble-bg);
+  color: var(--marble-fg);
+  border: 2px solid var(--marble-border);
   transform: translateY(0) scale(1);
   opacity: 1;
   transition: transform 280ms cubic-bezier(0.34, 1.56, 0.64, 1),
@@ -503,40 +502,25 @@ onMounted(() => {
   pointer-events: none;
 }
 
-.animated-marble__marble--error {
-  /* ✖ markers: square, not circle, to visually distinguish from values */
-  border-radius: 4px;
-  font-weight: 700;
-}
-
 .animated-marble__completion {
   position: absolute;
   top: 50%;
   transform: translate(-50%, -50%);
   font-size: 1.25rem;
   font-weight: 700;
-  color: var(--marble-ruler);
+  color: var(--track-ruler);
   line-height: 1;
 }
 
 .animated-marble__replay {
-  border-color: #d9dee2;
-  background: #ffffff;
-  color: #1f2933;
-}
-:global(.dark) .animated-marble__replay {
-  border-color: #334155;
-  background: #1a1f2e;
-  color: #e2e8f0;
+  border-color: var(--ui-border);
+  background: var(--ui-bg);
+  color: var(--ui-fg);
 }
 .animated-marble__replay:hover:not(:disabled),
 .animated-marble__replay:focus-visible:not(:disabled) {
-  border-color: #2563eb;
+  border-color: var(--ui-focus);
   outline: none;
-}
-:global(.dark) .animated-marble__replay:hover:not(:disabled),
-:global(.dark) .animated-marble__replay:focus-visible:not(:disabled) {
-  border-color: #60a5fa;
 }
 .animated-marble__replay:disabled {
   opacity: 0.5;
@@ -555,48 +539,51 @@ onMounted(() => {
 }
 
 /*
- * Per-color marble palette. These SELECT which CSS custom properties
- * the marble uses. The actual color values are defined in styles/marble.css
- * (Phase 4) with light + dark variants. Fallback values inline ensure
- * the component renders standalone for tests.
+ * Per-role palette. Each class SELECTS which shared --role-* token the
+ * marble uses for bg/fg/border. The actual color values live in
+ * styles/tokens.css with light + dark variants — NEVER here. To change
+ * a role's color, edit tokens.css; nothing in this file changes.
  */
-.animated-marble__marble--blue {
-  --marble-bg: var(--marble-blue, #3b82f6);
-  --marble-fg: #ffffff;
-  --marble-border: var(--marble-blue-border, transparent);
+.animated-marble__marble--source {
+  --marble-bg: var(--role-source);
+  --marble-fg: var(--role-source-fg);
+  --marble-border: var(--role-source-border);
 }
-.animated-marble__marble--purple {
-  --marble-bg: var(--marble-purple, #8b5cf6);
-  --marble-fg: #ffffff;
-  --marble-border: var(--marble-purple-border, transparent);
+.animated-marble__marble--inner {
+  --marble-bg: var(--role-inner);
+  --marble-fg: var(--role-inner-fg);
+  --marble-border: var(--role-inner-border);
 }
-.animated-marble__marble--amber {
-  --marble-bg: var(--marble-amber, #f59e0b);
-  --marble-fg: #1f2933;
-  --marble-border: var(--marble-amber-border, transparent);
+.animated-marble__marble--output {
+  --marble-bg: var(--role-output);
+  --marble-fg: var(--role-output-fg);
+  --marble-border: var(--role-output-border);
 }
-.animated-marble__marble--green {
-  --marble-bg: var(--marble-green, #10b981);
-  --marble-fg: #ffffff;
-  --marble-border: var(--marble-green-border, transparent);
+.animated-marble__marble--fallback {
+  --marble-bg: var(--role-fallback);
+  --marble-fg: var(--role-fallback-fg);
+  --marble-border: var(--role-fallback-border);
 }
-.animated-marble__marble--red {
-  --marble-bg: var(--marble-red, #ef4444);
-  --marble-fg: #ffffff;
-  --marble-border: var(--marble-red-border, transparent);
+.animated-marble__marble--error {
+  --marble-bg: var(--role-error);
+  --marble-fg: var(--role-error-fg);
+  --marble-border: var(--role-error-border);
+  /* ✖ markers: square, not circle, to visually distinguish from values */
+  border-radius: 4px;
+  font-weight: 700;
 }
-.animated-marble__marble--gray {
-  --marble-bg: var(--marble-gray, #9ca3af);
-  --marble-fg: #ffffff;
-  --marble-border: var(--marble-gray-border, transparent);
+.animated-marble__marble--discarded {
+  --marble-bg: var(--role-discarded);
+  --marble-fg: var(--role-discarded-fg);
+  --marble-border: var(--role-discarded-border);
   opacity: 0.7;
 }
-.animated-marble__marble--gray.animated-marble__marble--pending {
+.animated-marble__marble--discarded.animated-marble__marble--pending {
   opacity: 0;
 }
-.animated-marble__marble--teal {
-  --marble-bg: var(--marble-teal, #14b8a6);
-  --marble-fg: #ffffff;
-  --marble-border: var(--marble-teal-border, transparent);
+.animated-marble__marble--hot {
+  --marble-bg: var(--role-hot);
+  --marble-fg: var(--role-hot-fg);
+  --marble-border: var(--role-hot-border);
 }
 </style>
