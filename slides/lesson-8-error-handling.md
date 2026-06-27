@@ -55,33 +55,15 @@ A source emits `1`, then errors (`✖`). Without `catchError`, the output would 
 
 </v-click>
 
----
-layout: default
-class: px-8
----
-
-## Predict · catchError swaps in a fallback stream
-
-<AnimatedMarble
-  title="source → catchError → of(&quot;Fallback&quot;)"
-  :streams="[{ id: 'source', emissions: [{ id: 'src-1', value: '1', time: 0, lane: 0, role: 'source' }, { id: 'src-err', value: '✖', time: 1, lane: 0, role: 'error' }], complete: true }, { id: 'fallback', emissions: [{ id: 'fb', value: 'Fallback', time: 1.1, lane: 1, role: 'fallback' }], complete: true }, { id: 'output', emissions: [{ id: 'out-1', value: '1', time: 0, lane: 2, role: 'output' }, { id: 'out-fb', value: 'Fallback', time: 1.1, lane: 2, role: 'output' }], complete: true }]"
-  :duration="2.1"
-  :lanes="3"
-  :visible-lanes="[0]"
-/>
-
-<v-click>
-
-> 🤔 **Before you advance**: sketch the output lane in your head. *What values appear, in what order, and where does the stream complete?*
-
-</v-click>
 
 ---
 layout: default
 class: px-8
 ---
 
-## Reveal · catchError swaps in a fallback stream
+## Reveal
+
+<div class="text-sm opacity-70 mb-2">catchError swaps in a fallback stream</div>
 
 <AnimatedMarble
   title="source → catchError → of(&quot;Fallback&quot;)"

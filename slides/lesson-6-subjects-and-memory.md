@@ -51,7 +51,9 @@ layout: default
 class: px-8
 ---
 
-## Predict · A Subject multicasts one value to two subscribers
+## Predict
+
+<div class="text-sm opacity-70 mb-2">A Subject multicasts one value to two subscribers</div>
 
 <AnimatedMarble
   title="Subject.next(100) — one emission, two subscribers"
@@ -72,7 +74,9 @@ layout: default
 class: px-8
 ---
 
-## Reveal · A Subject multicasts one value to two subscribers
+## Reveal
+
+<div class="text-sm opacity-70 mb-2">A Subject multicasts one value to two subscribers</div>
 
 <AnimatedMarble
   title="Subject.next(100) — one emission, two subscribers"

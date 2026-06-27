@@ -319,12 +319,12 @@ onMounted(() => {
 
 <template>
   <figure
-    class="animated-marble mx-auto w-full max-w-4xl my-4 text-left select-none"
+    class="animated-marble mx-auto w-full max-w-4xl my-2 text-left select-none"
     role="img"
     :aria-label="title"
   >
     <figcaption
-      class="animated-marble__title text-sm font-medium mb-3 opacity-80"
+      class="animated-marble__title text-xs font-medium mb-2 opacity-80"
     >
       {{ title }}
     </figcaption>
@@ -334,7 +334,7 @@ onMounted(() => {
       <!-- timeline ruler (spans the track column only) -->
       <div aria-hidden="true" />
       <div
-        class="animated-marble__ruler relative h-1.5 mb-2 rounded-full"
+        class="animated-marble__ruler relative h-1 mb-1.5 rounded-full"
         aria-hidden="true"
       />
 
@@ -386,7 +386,7 @@ onMounted(() => {
     </div>
 
     <!-- replay control -->
-    <div v-if="replay" class="animated-marble__controls mt-4 flex items-center gap-2 pl-[5.5rem]">
+    <div v-if="replay" class="animated-marble__controls mt-2 flex items-center gap-2 pl-[5.5rem]">
       <button
         type="button"
         class="animated-marble__replay text-xs px-2.5 py-1 border rounded-md transition-colors duration-150"
@@ -416,8 +416,9 @@ onMounted(() => {
  */
 
 .animated-marble {
-  --marble-size: 2rem;
-  --lane-height: 2.75rem;
+  --marble-size: 1.5rem;
+  --lane-height: 2rem;
+  --marble-min-width: 1.5rem;
 }
 
 .animated-marble__body {
@@ -468,18 +469,21 @@ onMounted(() => {
 .animated-marble__marble {
   position: absolute;
   top: 50%;
-  width: var(--marble-size);
+  width: auto;
+  min-width: var(--marble-min-width);
   height: var(--marble-size);
-  margin-left: calc(var(--marble-size) / -2);
+  margin-left: calc(var(--marble-min-width) / -2);
   margin-top: calc(var(--marble-size) / -2);
   display: inline-flex;
   align-items: center;
   justify-content: center;
   border-radius: 9999px;
-  font-size: 0.75rem;
+  font-size: 0.65rem;
   font-weight: 600;
   line-height: 1;
   text-align: center;
+  white-space: nowrap;
+  padding: 0 0.35rem;
   background: var(--marble-bg);
   color: var(--marble-fg);
   border: 2px solid var(--marble-border);

@@ -55,33 +55,15 @@ A `user$` stream and a `theme$` stream. The view combines them into "`{user} in 
 
 </v-click>
 
----
-layout: default
-class: px-8
----
-
-## Predict · combineLatest waits for all, then fires on any
-
-<AnimatedMarble
-  title="combineLatest([user$, theme$]) → &quot;{user} in {theme} mode&quot;"
-  :streams="[{ id: 'user$', emissions: [{ id: 'u1', value: 'Alice', time: 0, lane: 0, role: 'source' }, { id: 'u2', value: 'Bob', time: 3, lane: 0, role: 'source' }] }, { id: 'theme$', emissions: [{ id: 't1', value: 'Dark', time: 1, lane: 1, role: 'source' }, { id: 't2', value: 'Light', time: 4, lane: 1, role: 'source' }] }, { id: 'view', emissions: [{ id: 'v1', value: 'Alice|Dark', time: 1, lane: 2, role: 'output' }, { id: 'v2', value: 'Bob|Dark', time: 3, lane: 2, role: 'output' }, { id: 'v3', value: 'Bob|Light', time: 4, lane: 2, role: 'output' }], complete: true }]"
-  :duration="5"
-  :lanes="3"
-  :visible-lanes="[0, 1]"
-/>
-
-<v-click>
-
-> 🤔 **Before you advance**: sketch the output lane in your head. *What values appear, in what order, and where does the stream complete?*
-
-</v-click>
 
 ---
 layout: default
 class: px-8
 ---
 
-## Reveal · combineLatest waits for all, then fires on any
+## Reveal
+
+<div class="text-sm opacity-70 mb-2">combineLatest waits for all, then fires on any</div>
 
 <AnimatedMarble
   title="combineLatest([user$, theme$]) → &quot;{user} in {theme} mode&quot;"

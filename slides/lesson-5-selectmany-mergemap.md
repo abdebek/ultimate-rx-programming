@@ -53,33 +53,15 @@ The input is **byte-for-byte identical** to Lesson 4: three clicks, same timing,
 
 </v-click>
 
----
-layout: default
-class: px-8
----
-
-## Predict · mergeMap / SelectMany keeps every inner
-
-<AnimatedMarble
-  title="mergeMap / SelectMany: no inner is cancelled"
-  :streams="[{ id: 'clicks', emissions: [{ id: 'click-1', value: '🔵', time: 0, lane: 0, role: 'source' }, { id: 'click-2', value: '🔵', time: 1.5, lane: 0, role: 'source' }, { id: 'click-3', value: '🔵', time: 3, lane: 0, role: 'source' }] }, { id: 'inner-1', emissions: [{ id: 'A1', value: 'A1', time: 0.2, lane: 1, role: 'inner' }, { id: 'A2', value: 'A2', time: 0.9, lane: 1, role: 'inner' }, { id: 'A3', value: 'A3', time: 1.6, lane: 1, role: 'inner' }], complete: true }, { id: 'inner-2', emissions: [{ id: 'B1', value: 'B1', time: 1.7, lane: 2, role: 'inner' }, { id: 'B2', value: 'B2', time: 2.4, lane: 2, role: 'inner' }, { id: 'B3', value: 'B3', time: 3.1, lane: 2, role: 'inner' }], complete: true }, { id: 'output', emissions: [{ id: 'out-A1', value: 'A1', time: 0.2, lane: 3, role: 'output' }, { id: 'out-A2', value: 'A2', time: 0.9, lane: 3, role: 'output' }, { id: 'out-A3', value: 'A3', time: 1.6, lane: 3, role: 'output' }, { id: 'out-B1', value: 'B1', time: 1.7, lane: 3, role: 'output' }, { id: 'out-B2', value: 'B2', time: 2.4, lane: 3, role: 'output' }, { id: 'out-B3', value: 'B3', time: 3.1, lane: 3, role: 'output' }], complete: true }]"
-  :duration="4.1"
-  :lanes="4"
-  :visible-lanes="[0, 1, 2]"
-/>
-
-<v-click>
-
-> 🤔 **Before you advance**: sketch the output lane in your head. *What values appear, in what order, and where does the stream complete?*
-
-</v-click>
 
 ---
 layout: default
 class: px-8
 ---
 
-## Reveal · mergeMap / SelectMany keeps every inner
+## Reveal
+
+<div class="text-sm opacity-70 mb-2">mergeMap / SelectMany keeps every inner</div>
 
 <AnimatedMarble
   title="mergeMap / SelectMany: no inner is cancelled"

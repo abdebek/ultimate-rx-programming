@@ -10,34 +10,21 @@ info: |
 highlighter: shiki
 transition: slide-left
 mdc: true
+layout: cover
+class: text-center
 ---
 
 # Ultimate Reactive Programming
 
-An interactive course · RxJS & Rx.NET side by side
+An interactive course on Observables, operators, and streams
 
-<div class="text-sm opacity-70 mt-8">
-  Marble diagrams animate as you advance. Quizzes check your understanding.
-  Toggle dark mode with the theme switch — every diagram adapts.
+<div class="text-sm opacity-60 mt-6">
+  RxJS &amp; Rx.NET · side by side · with animated marble diagrams &amp; quizzes
 </div>
 
----
-layout: center
-class: text-center
----
-
-# Component smoke test
-
-If both render below, the scaffold is healthy.
-
-<AnimatedMarble
-  title="smoke test: source → output"
-  :streams="[{ id: 'src', emissions: [{ id: 's1', value: '1', time: 0, lane: 0, role: 'source' }, { id: 's2', value: '2', time: 1, lane: 0, role: 'source' }, { id: 's3', value: '3', time: 2, lane: 0, role: 'source' }], complete: true }, { id: 'out', emissions: [{ id: 'o1', value: '1', time: 0, lane: 1, role: 'output' }, { id: 'o2', value: '4', time: 1, lane: 1, role: 'output' }, { id: 'o3', value: '9', time: 2, lane: 1, role: 'output' }], complete: true }]"
-  :duration="3"
-  :lanes="2"
-/>
-
-<QuizWidget :question-index="0" class="mt-12" />
+<div class="text-xs opacity-40 mt-12">
+  Press → to start · Toggle dark mode with the theme switch
+</div>
 
 ---
 src: ./slides/lesson-1-observables-and-subscriptions.md

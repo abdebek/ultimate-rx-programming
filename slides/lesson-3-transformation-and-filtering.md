@@ -61,7 +61,9 @@ layout: default
 class: px-8
 ---
 
-## Predict · filter → map → take
+## Predict
+
+<div class="text-sm opacity-70 mb-2">filter → map → take</div>
 
 <AnimatedMarble
   title="range(1, 8) → filter(even) → map(×10) → take(3)"
@@ -82,7 +84,9 @@ layout: default
 class: px-8
 ---
 
-## Reveal · filter → map → take
+## Reveal
+
+<div class="text-sm opacity-70 mb-2">filter → map → take</div>
 
 <AnimatedMarble
   title="range(1, 8) → filter(even) → map(×10) → take(3)"

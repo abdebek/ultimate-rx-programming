@@ -166,16 +166,16 @@ defineExpose({ selectOption, resetAnswer, isLocked });
 
 <template>
   <section
-    class="quiz-widget max-w-4xl mx-auto text-left text-base leading-relaxed"
+    class="quiz-widget max-w-4xl mx-auto text-left text-sm leading-snug"
     :aria-label="`Quiz question ${questionIndex + 1}`"
   >
-    <p class="quiz-widget__prompt text-xl font-semibold mt-0 mb-5">
+    <p class="quiz-widget__prompt text-base font-semibold mt-0 mb-3">
       {{ question.question }}
     </p>
 
     <ul
       ref="listbox"
-      class="quiz-widget__options list-none m-0 mb-5 p-0 flex flex-col gap-2 outline-none"
+      class="quiz-widget__options list-none m-0 mb-3 p-0 flex flex-col gap-1.5 outline-none"
       :class="{ 'cursor-default': isLocked }"
       role="listbox"
       tabindex="0"
@@ -189,7 +189,7 @@ defineExpose({ selectOption, resetAnswer, isLocked });
         v-for="(option, i) in question.options"
         :id="`quiz-opt-${questionIndex}-${i}`"
         :key="i"
-        class="quiz-widget__option flex items-start gap-3 px-4 py-3 border rounded-lg cursor-pointer transition-colors duration-120"
+        class="quiz-widget__option flex items-start gap-2 px-3 py-2 border rounded-md cursor-pointer transition-colors duration-120"
         :class="{
           'quiz-widget__option--focused': !isLocked && i === focusedIndex,
           'quiz-widget__option--selected': selectedIndex === i,
@@ -203,7 +203,7 @@ defineExpose({ selectOption, resetAnswer, isLocked });
         @click="selectOption(i)"
       >
         <span
-          class="quiz-widget__marker shrink-0 w-6 font-bold text-center leading-6"
+          class="quiz-widget__marker shrink-0 w-5 font-bold text-center leading-5"
           aria-hidden="true"
         >
           <template v-if="isLocked && option.isCorrect">✓</template>
@@ -217,7 +217,7 @@ defineExpose({ selectOption, resetAnswer, isLocked });
     <transition name="quiz-widget__feedback">
       <div
         v-if="selectedOption"
-        class="quiz-widget__feedback mt-2 px-5 py-4 rounded-lg border"
+        class="quiz-widget__feedback mt-1.5 px-4 py-3 rounded-md border"
         :class="{
           'quiz-widget__feedback--correct': selectedOption.isCorrect,
           'quiz-widget__feedback--incorrect': !selectedOption.isCorrect,
@@ -225,14 +225,14 @@ defineExpose({ selectOption, resetAnswer, isLocked });
         role="status"
         aria-live="polite"
       >
-        <p class="font-bold m-0 mb-2">
+        <p class="font-bold m-0 mb-1">
           <template v-if="selectedOption.isCorrect">✓ Correct</template>
           <template v-else>✗ Not quite</template>
         </p>
-        <p class="m-0 mb-3">{{ selectedOption.explanation }}</p>
+        <p class="m-0 mb-2">{{ selectedOption.explanation }}</p>
         <button
           type="button"
-          class="quiz-widget__retry text-sm px-3.5 py-1.5 border rounded-md transition-colors duration-120"
+          class="quiz-widget__retry text-xs px-2.5 py-1 border rounded transition-colors duration-120"
           @click="resetAnswer"
         >
           Try again
