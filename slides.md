@@ -2,6 +2,7 @@
 # Slidev frontmatter — project-level config applied to every slide
 # unless overridden per-slide. See https://sli.dev/custom/
 title: Ultimate Reactive Programming
+favicon: favicon.ico
 theme: default
 info: |
   An interactive course teaching the fundamentals of Reactive Programming
