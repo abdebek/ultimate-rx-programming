@@ -87,7 +87,7 @@ class: px-8
 
 - Each **circle** is one emitted value — its horizontal position = `marble.time`.
 - A **`|`** at the end of a lane marks `complete` (clean end).
-- A **`✖``** marks `error` (terminal failure).
+- A **``✖``** marks `error` (terminal failure).
 - Time always flows **left → right**. Nothing animates until you advance the slide.
 
 </v-clicks>
