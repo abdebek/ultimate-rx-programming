@@ -100,8 +100,7 @@ layout: default-content
 </v-click>
 
 ---
-layout: center
-class: text-center
+layout: default-content
 ---
 
 ## Visualization · a synchronous stream

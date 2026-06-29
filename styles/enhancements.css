@@ -3,6 +3,24 @@
  * Strategic styling improvements across all slides
  * ============================================================ */
 
+/* --- Global Zoom --------------------------------------- */
+/* Slidev's `zoom` frontmatter scales each slide's content to fit
+ * dense slides, but it is per-slide only (read from route.meta, not
+ * headmatter defaults). Setting the underlying CSS variable on the
+ * slide page wrapper applies the same scaling globally so every slide
+ * gets the 0.8 fit without authoring zoom on each one.
+ *
+ * Specificity note: SlideWrapper's scoped style
+ * `.slidev-page[data-v-...]` sets the same variable to 1 and loads
+ * after this stylesheet, so we match that specificity (class + attr)
+ * with .slidev-page[data-slidev-no] and rely on source order — but
+ * since SlideWrapper loads later, we add an extra attribute to win.
+ * Per-slide `zoom` frontmatter sets the var via inline style, which
+ * still beats this rule, so individual slides can override. */
+.slidev-page.slidev-page[data-slidev-no] {
+  --slidev-slide-zoom-scale: 0.8;
+}
+
 /* --- Global Typography & Spacing ----------------------- */
 :root {
   --transition-smooth: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -20,18 +38,26 @@
 }
 
 .slidev-code-block pre {
-  padding: 20px !important;
-  font-size: 16px !important;
-  line-height: 1.6 !important;
+  padding: 14px 18px !important;
+  font-size: 13px !important;
+  line-height: 1.5 !important;
 }
 
-/* Enhance inline code */
-code {
+/* Enhance inline code (not inside code blocks) */
+code:not(pre code) {
   background: var(--ui-muted-bg);
   padding: 3px 8px;
   border-radius: 4px;
   font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
   font-size: 0.9em;
+}
+
+/* Reset any inherited inline-code styling inside code blocks */
+.slidev-code-block code {
+  background: transparent;
+  padding: 0;
+  border-radius: 0;
+  font-size: inherit;
 }
 
 .dark code {
@@ -54,8 +80,8 @@ h2 {
   color: var(--ui-fg);
   font-weight: 600;
   font-size: 2.2rem;
-  margin-top: 1rem;
-  margin-bottom: 0.8rem;
+  margin-top: 0.25rem;
+  margin-bottom: 0.5rem;
   position: relative;
   padding-left: 12px;
 }
@@ -76,7 +102,8 @@ h3 {
   color: var(--ui-fg);
   font-weight: 600;
   font-size: 1.5rem;
-  margin-top: 0.8rem;
+  margin-top: 0.25rem;
+  margin-bottom: 0.4rem;
 }
 
 /* --- List & Link Styling -------------------------------- */
@@ -210,7 +237,7 @@ button:active {
 
 /* --- Slide Content Padding & Layout -------------------- */
 .slidev-layout.default-content {
-  padding: 3rem 4rem !important;
+  padding: 2rem 4rem !important;
 }
 
 .slidev-layout.default-content h2 {
@@ -312,6 +339,14 @@ hr {
 
 .animate-fade-in {
   animation: fadeIn var(--transition-smooth);
+}
+
+/* --- Navigation ---------------------------------------- */
+/* Prevent the global button:hover transform from lifting
+   buttons inside the nav toolbar. */
+#slide-container nav button:hover {
+  transform: none !important;
+  box-shadow: none !important;
 }
 
 /* --- Print Styles -------------------------------------- */
